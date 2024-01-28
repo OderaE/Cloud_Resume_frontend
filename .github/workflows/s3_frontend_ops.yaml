@@ -46,7 +46,27 @@ jobs:
             - name: test the code hosted from the testing bucket
               run: |
                 cd ./tests/unit
-                ls -a
+                pytest
+    AcceptCode:
+        needs: Test
+        env:
+            GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get the successfully tested code
+              uses: actions/checkout@v4
+              with:
+                ref: dev
+            - name: Scrub the code for dev keywords
+              run: |
+                sed -i 's|test|count|g' ./assets/js/visitorApi.js
+                sed -i 's|oderalabs.link/admin-test/index.html|oderalabs.link/|g' ./tests/unit/functionality_security_test.py
+            - name: Create a pull request from dev to main 
+              run: |
+                gh pr create -B main -H dev --title "Merge passed code from dev to main. Merge hash: ${{hashFiles('./')}}"
+            
+                
+
     
     
 
