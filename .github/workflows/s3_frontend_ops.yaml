@@ -27,8 +27,6 @@ jobs:
         needs: AuthenticateToAWS
         runs-on: ubuntu-latest
         steps:
-            - name: Create working directory
-              run: mkdir ~/s3objects
             - name: Get the code from the repo
               uses: actions/checkout@v4
               with:
@@ -44,10 +42,10 @@ jobs:
                 output-credentials: true
             - name: Upload the new objects to the s3 test bucket
               run: |
-                cd /tests/unit
                 aws s3 sync . s3://odera-cloud-resume-testing
             - name: test the code hosted from the testing bucket
               run: |
+                cd GITHUB_WORKSPACE/tests/unit
                 ls -a
                 pytest
     
