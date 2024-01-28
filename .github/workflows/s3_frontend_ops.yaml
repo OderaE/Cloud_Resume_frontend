@@ -9,22 +9,33 @@ permissions:
     contents: read    # This is required for actions/checkout
 jobs:
     AuthenticateToAWSandGetCode:
-        runs-on: macos-latest
+        runs-on: ubuntu-latest
         steps: 
-            - name: Get the code from the repo
-              uses: actions/checkout@v4
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   aws-region: ${{secrets.AWS_DEFAULT_REGION}}
-                  role-to-assume: arn:aws:iam::755341967779:role/GitHub-IdP-Role-Tgr2bLzqyX9p
+                  role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
                   role-session-name: GiHubActions-frontend-workflow_via_OIDC
                   retry-max-attempts: 3
-            # Hello from AWS: WhoAmI
-            - name: test connection to AWS resources - Sts GetCallerIdentity
-              run: |
-                    aws sts get-caller-identity
             - name: test connection to AWS resources
               run: |
-                aws s3api list-objects --bucket odera-cloud-resume --max-items 1
+                aws s3api list-objects --bucket odera-cloud-resume-testing --max-items 1
+    Test:
+        needs: AuthenticateToAWSandGetCode
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get the code from the repo
+              uses: actions/checkout@v4
+            - name: Upload new objects to s3 test bucket
+              run: |
+                aws s3 sync . s3://odera-cloud-resume-testing
+            - name: test the code hosted from the testing bucket
+              run: |
+                cd /test/unit
+                pytest
+    
+    
+
+    
 
