@@ -8,26 +8,37 @@ permissions:
     id-token: write   # This is required for requesting the JWT
     contents: read    # This is required for actions/checkout
 jobs:
-    AuthenticateToAWSandGetCode:
+    AuthenticateToAWS:
         runs-on: ubuntu-latest
         steps: 
             - name: Configure AWS Credentials
+              id: AWS-creds-auth
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   aws-region: ${{secrets.AWS_DEFAULT_REGION}}
                   role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
                   role-session-name: GiHubActions-frontend-workflow_via_OIDC
                   retry-max-attempts: 3
+                  output-credentials: true
             - name: test connection to AWS resources
               run: |
                 aws s3api list-objects --bucket odera-cloud-resume-testing --max-items 1
     Test:
-        needs: AuthenticateToAWSandGetCode
+        needs: AuthenticateToAWS
         runs-on: ubuntu-latest
         steps:
             - name: Get the code from the repo
               uses: actions/checkout@v4
-            - name: Upload new objects to s3 test bucket
+            - name: Assume aws sts role
+              id: AWS-creds-test
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-region: ${{secrets.AWS_DEFAULT_REGION}}
+                role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
+                role-session-name: GiHubActions-frontend-workflow_via_OIDC
+                retry-max-attempts: 3
+                output-credentials: true
+            - name: Upload the new objects to the s3 test bucket
               run: |
                 aws s3 sync . s3://odera-cloud-resume-testing
             - name: test the code hosted from the testing bucket
