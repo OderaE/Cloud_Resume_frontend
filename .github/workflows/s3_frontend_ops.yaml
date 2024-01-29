@@ -76,6 +76,8 @@ jobs:
                 git config --local user.email ${{secrets.USER_EMAIL}}
                 git config --local user.name "baex3"
                 git commit -a -m "pushing commit from Actions CI: ${{hashFiles('./')}}"
+                git checkout main
+                git merge dev
             - name: Push changes
               uses: ad-m/github-push-action@master
               with:
