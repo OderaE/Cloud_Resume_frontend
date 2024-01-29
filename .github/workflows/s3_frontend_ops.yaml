@@ -65,6 +65,7 @@ jobs:
               uses: actions/checkout@v4
               with:
                 ref: dev
+                fetch-depth: 0 
             - name: Scrub the code of dev keywords
               run: |
                 sed -i 's|test|count|g' ./assets/js/visitorApi.js
