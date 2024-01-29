@@ -43,7 +43,7 @@ jobs:
             - name: Upload the new objects to the s3 test bucket
               run: |
                 aws s3 sync . s3://odera-cloud-resume-testing
-            - name: Cache dependencies
+            - name: Cache dependencies - pytest in this case
               uses: actions/cache@v3
               with:
                 path: ./tests/unit/.pytest_cache
@@ -52,9 +52,7 @@ jobs:
               run: pip install pytest
             - name: test the code hosted from the testing bucket
               run: |
-                ls -a
                 cd ./tests/unit
-                ls -a
                 pytest
     AcceptCode:
         needs: Test
@@ -72,7 +70,7 @@ jobs:
                 sed -i 's|oderalabs.link/admin-test/index.html|oderalabs.link/|g' ./tests/unit/functionality_security_test.py
             - name: Create a pull request from dev to main 
               run: |
-                gh pr create -B main -H dev --title "Merge passed code from dev to main. Merge hash: ${{hashFiles('./')}}"
+                gh pr create -B main -H dev --title "Merge passed code from dev to main. Merge hash: ${{hashFiles('./')}}" --body "This contains code that has been tested from dev and then updated to call the prod api and resources on AWS"
             
                 
 
