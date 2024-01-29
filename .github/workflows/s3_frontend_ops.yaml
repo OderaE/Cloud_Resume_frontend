@@ -102,12 +102,14 @@ jobs:
             - name: Upload the new objects to the s3 test bucket
               run: |
                   aws s3 sync . s3://odera-cloud-resume
-            - name: Pull cached dependencies
+            - name: Invalidate CloudFront cache
+              run: aws cloudfront create-invalidation --distribution-id ${{secrets.CF_DISTRIBUTION_ID}} --paths '/*'
+            - name: Pull cached dependencies stored in GH Actions Workflow
               uses: actions/cache@v4
               with:
                 path: ./tests/unit/.pytest_cache
                 key: pytest-caching-${{ hashFiles('./tests/unit/.pytest_cache/CACHEDIR.TAG') }}
-            - name: Install pytest (from cache) and test the deployment
+            - name: Install pytest (from workflow cache) and test the deployment
               run: pip install pytest
             - name: test the production code hosted from the testing bucket
               run: |
