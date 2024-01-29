@@ -156,8 +156,8 @@ class SecurityTests:
 
 def test_runner():
     '''Test the webpage for successful functionality - returning 200 OK'''
-    webpage_url = "https://oderalabs.link/admin-test/index.html"
-    http_webpage_url = "http://oderalabs.link/admin-test/index.html"
+    webpage_url = "https://oderalabs.link/"
+    http_webpage_url = "http://oderalabs.link/"
     api_page_url = "https://oderalabs.link/test/visits"
     http_api_url = "http://oderalabs.link/test/visits"
     headers = {"Content-Type": "application/json", "User-Agent":"vsCode", "Connection":"keep-alive"}
