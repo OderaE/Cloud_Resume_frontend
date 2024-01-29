@@ -58,8 +58,6 @@ jobs:
     AcceptCode:
         needs: Test
         runs-on: ubuntu-latest
-        permissions: 
-            contents: write
         steps:
             - name: Get the successfully tested code
               uses: actions/checkout@v4
@@ -69,16 +67,12 @@ jobs:
               run: |
                 sed -i 's|test|count|g' ./assets/js/visitorApi.js
                 sed -i 's|oderalabs.link\/admin-test\/index.html|oderalabs.link\/|g' ./tests/unit/functionality_security_test.py
-            - name: Commit files
+            - name: Push the local dev repo to main 
               run: |
-                git config --local user.email ${{secrets.USER_EMAIL}}
-                git config --local user.name "baex3"
-                git commit -a -m "pushing commit from Actions CI: ${{hashFiles('./')}}"
-            - name: Push changes
-              uses: ad-m/github-push-action@master
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                branch: ${{ github.ref }}
+                git remote add origin https://baex3@github.com/baex3/Cloud_Resume_frontend
+                git add .
+                git commit "pushing commit from Actions CI: ${{hashFiles('./')}}"
+                git push origin main 
               env:
                 GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
                 
