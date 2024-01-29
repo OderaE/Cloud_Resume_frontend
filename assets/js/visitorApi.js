@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // API endpoint URL
-    const apiUrl = 'https://oderalabs.link/test/visits';
+    const apiUrl = 'https://oderalabs.link/count/visits';
 
     // Get the element where API data will be displayed
     const apiDataElement = document.getElementById('apiData');
