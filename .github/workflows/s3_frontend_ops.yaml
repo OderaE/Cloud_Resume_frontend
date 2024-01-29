@@ -45,7 +45,7 @@ jobs:
                 aws s3 sync . s3://odera-cloud-resume-testing
             - name: test the code hosted from the testing bucket
               run: |
-                cd $GITHUB_WORKSPACE/tests/unit
+                find . -name functionality_security_test.py | cd
                 pytest
     AcceptCode:
         needs: Test
