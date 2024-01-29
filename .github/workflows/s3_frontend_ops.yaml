@@ -66,7 +66,7 @@ jobs:
             - name: Scrub the code for dev keywords
               run: |
                 sed -i 's|test|count|g' ./assets/js/visitorApi.js
-                sed -i 's|oderalabs.link/admin-test/index.html|oderalabs.link/|g' ./tests/unit/functionality_security_test.py
+                sed -i 's|oderalabs.link\/admin-test\/index.html|oderalabs.link\/|g' ./tests/unit/functionality_security_test.py
             - name: Create a pull request from dev to main 
               run: |
                 gh pr create -B main -H dev --title "Merge passed code from dev to main. Merge hash: ${{hashFiles('./')}}" --body "This contains code that has been tested from dev and then updated to call the prod api and resources on AWS"
