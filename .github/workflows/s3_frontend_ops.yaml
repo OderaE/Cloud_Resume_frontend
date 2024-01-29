@@ -75,6 +75,7 @@ jobs:
                 git config --local user.email ${{secrets.USER_EMAIL}}
                 git config --local user.name "baex3"
                 git remote set-url origin https://baex3@github.com/baex3/Cloud_Resume_frontend/
+                git pull --rebase origin
                 git commit -a -m "pushing commit from Actions CI: ${{hashFiles('./')}}"
                 git push origin main
               env:
