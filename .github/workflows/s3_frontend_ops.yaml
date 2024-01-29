@@ -43,10 +43,18 @@ jobs:
             - name: Upload the new objects to the s3 test bucket
               run: |
                 aws s3 sync . s3://odera-cloud-resume-testing
+            - name: Cache dependencies
+              uses: actions/cache@v3
+              with:
+                path: ./tests/unit/.pytest_cache
+                key: pytest-caching-${{ hashFiles('./tests/unit/.pytest_cache/CACHEDIR.TAG') }}
+            - name: install pytest
+              run: pip install pytest
             - name: test the code hosted from the testing bucket
               run: |
                 ls -a
                 cd ./tests/unit
+                ls -a
                 pytest
     AcceptCode:
         needs: Test
