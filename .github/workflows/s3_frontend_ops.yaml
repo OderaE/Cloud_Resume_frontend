@@ -102,8 +102,9 @@ jobs:
                 output-credentials: false
             - name: Upload the new objects to the s3 test bucket and maintenance page
               run: |
-                  aws s3 sync . s3://odera-cloud-resume --exclude "maintenance.html"
-                  aws s3 sync . s3://error-pages-oe-engr --exclude "index.html" --exclude ".github/*" --exclude "tests/*" --exclude "images/*" --include "images/servers2.jpg" --include "images/logo.*"
+                  aws s3 sync . s3://odera-cloud-resume --exclude "maintenance.html" --exclude "404.html"
+                  aws s3 sync . s3://error-pages-oe-engr/5xx-errors/ --exclude "index.html" --exclude "404.html" --exclude ".github/*" --exclude "tests/*" --exclude "images/*" --include "images/servers2.jpg" --include "images/logo.*" --exclude "/assets/js/visitorApi.js"
+                  aws s3 sync . s3://error-pages-oe-engr/4xx-errors/ --exclude "index.html" --exclude "maintenance.html" --exclude ".github/*" --exclude "tests/*" --exclude "images/*" --include "images/servers2.jpg" --include "images/logo.*" --exclude "/assets/js/visitorApi.js"
             - name: Invalidate CloudFront cache
               run: aws cloudfront create-invalidation --distribution-id ${{secrets.CF_DISTRIBUTION_ID}} --paths '/*'
             - name: Pull cached dependencies stored in GH Actions Workflow
