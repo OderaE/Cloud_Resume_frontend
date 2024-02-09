@@ -117,7 +117,7 @@ class FunctionalityTests:
         assert response.status_code == 200, f"Error: {response.text}"
         assert response.headers["Access-Control-Allow-Methods"] == "GET, OPTIONS"
         assert response.headers["Access-Control-Allow-Headers"] == "*"
-        assert response.headers["Access-Control-Allow-Origin"] == "h*"
+        assert response.headers["Access-Control-Allow-Origin"] == "*"
         print(f"Success! The api responded with the cors pre-flight options:\n {json.dumps(dict(response.headers), indent=4)}\n")
 
     def api_test_incrementation(endpoint: str, headers: dict, verify: bool = True) -> requests.Response:
