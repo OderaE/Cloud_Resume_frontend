@@ -34,7 +34,7 @@ jobs:
                 ref: dev
             - name: Assume aws sts role
               id: AWS-creds-test
-              uses: aws-actions/configure-aws-credentials@v4
+              uses: aws-actions/configure-aws-credentials@v6.3.0
               with:
                 aws-region: ${{secrets.AWS_DEFAULT_REGION}}
                 role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
@@ -74,7 +74,7 @@ jobs:
             - name: Commit files
               run: |
                 git config --local user.email ${{secrets.USER_EMAIL}}
-                git config --local user.name "baex3"
+                git config --local user.name "OderaE"
                 git commit -a -m "pushing commit from Actions CI: ${{hashFiles('./')}}"
                 git checkout main
                 git merge dev
@@ -93,7 +93,7 @@ jobs:
                 ref: main
             - name: Assume aws sts role
               id: AWS-creds-prod
-              uses: aws-actions/configure-aws-credentials@v4
+              uses: aws-actions/configure-aws-credentials@v6.3.0
               with:
                 aws-region: ${{secrets.AWS_DEFAULT_REGION}}
                 role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
