@@ -17,7 +17,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v6.3.0
               with:
                   aws-region: ${{secrets.AWS_DEFAULT_REGION}}
-                  role-to-assume: ${{secrets.CLOUD_RESUME_AUTOMATION_ROLE}}
+                  role-to-assume: arn:aws:iam::755341967779:role/GitHub-IdP-Role-Tgr2bLzqyX9p
                   role-session-name: GiHubActions-frontend-workflow_via_OIDC
                   retry-max-attempts: 3
                   output-credentials: true
